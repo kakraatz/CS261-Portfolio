@@ -67,7 +67,6 @@ class HashMap:
         """"""
         bucket_location = self.hash_function(key) % self.buckets.length()
 
-
     def put(self, key: str, value: object) -> None:
         """"""
         bucket_location = self.hash_function(key) % self.buckets.length()
@@ -79,10 +78,14 @@ class HashMap:
             self.size = self.size + 1
 
     def remove(self, key: str) -> None:
-        """
-        TODO: Write this implementation
-        """
-        pass
+        """"""
+        bucket_location = self.hash_function(key) % self.buckets.length()
+        if self.buckets[bucket_location].contains(key):
+            found_node = self.buckets[bucket_location]
+            if found_node.remove(key) is True:
+                found_node.remove(key)
+            else:
+                return
 
     def contains_key(self, key: str) -> bool:
         """"""
