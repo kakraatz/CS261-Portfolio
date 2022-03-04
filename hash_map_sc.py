@@ -60,8 +60,6 @@ class HashMap:
 
     def clear(self) -> None:
         """"""
-        self.capacity = 0
-        return
 
     def get(self, key: str) -> object:
         """
@@ -71,11 +69,17 @@ class HashMap:
 
     def put(self, key: str, value: object) -> None:
         """"""
-        for i in range(0, self.size - 1):
-            if i == key:
-                SLNode.value = value
+        bucket_location = self.hash_function(key)
+        if self.buckets.get_at_index(bucket_location) is None:
+            list = LinkedList()
+            list.insert(key, value)
+            self.buckets.set_at_index(bucket_location, list)
+        else:
+            if self.buckets[bucket_location].contains(key):
+                found_node = self.buckets[bucket_location].contains(key)
+                found_node.value = value
             else:
-                LinkedList.insert(key, value)
+                self.buckets[bucket_location].insert(key, value)
 
     def remove(self, key: str) -> None:
         """
@@ -95,10 +99,11 @@ class HashMap:
         pass
 
     def table_load(self) -> float:
-        """
-        TODO: Write this implementation
-        """
-        pass
+        """"""
+        n = self.size
+        m = self.capacity
+        load = n / m
+        return load
 
     def resize_table(self, new_capacity: int) -> None:
         """
