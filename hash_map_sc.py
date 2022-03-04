@@ -69,17 +69,16 @@ class HashMap:
 
     def put(self, key: str, value: object) -> None:
         """"""
-        bucket_location = self.hash_function(key)
-        if self.buckets.get_at_index(bucket_location) is None:
-            list = LinkedList()
-            list.insert(key, value)
-            self.buckets.set_at_index(bucket_location, list)
+        bucket_location = self.hash_function(key) % self.buckets.length()
+        # print(self.buckets.get_at_index(bucket_location))
+        if self.buckets[bucket_location].contains(key):
+            found_node = self.buckets[bucket_location].contains(key)
+            found_node.value = value
         else:
-            if self.buckets[bucket_location].contains(key):
-                found_node = self.buckets[bucket_location].contains(key)
-                found_node.value = value
-            else:
-                self.buckets[bucket_location].insert(key, value)
+            if self.buckets.get_at_index(bucket_location).length() == 0:
+                self.size = self.size + 1
+            self.buckets[bucket_location].insert(key, value)
+
 
     def remove(self, key: str) -> None:
         """
@@ -93,10 +92,9 @@ class HashMap:
             return False
 
     def empty_buckets(self) -> int:
-        """
-        TODO: Write this implementation
-        """
-        pass
+        """"""
+        new_cap = self.capacity - self.size
+        return new_cap
 
     def table_load(self) -> float:
         """"""
