@@ -1,8 +1,8 @@
-# Name:
-# OSU Email:
+# Name: Kevin Kraatz
+# OSU Email: kraatzk@oregonstate.edu
 # Course: CS261 - Data Structures
-# Assignment:
-# Due Date:
+# Assignment: 6 - Portfolio Project - HashMap Implementation
+# Due Date: 03/11/2022
 # Description:
 
 
