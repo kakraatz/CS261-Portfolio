@@ -60,6 +60,7 @@ class HashMap:
 
     def clear(self) -> None:
         """"""
+        pass
 
     def get(self, key: str) -> object:
         """
