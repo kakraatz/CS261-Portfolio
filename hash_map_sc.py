@@ -114,9 +114,11 @@ class HashMap:
     def get_keys(self) -> DynamicArray:
         """"""
         array = DynamicArray()
-        for i in range(0, self.capacity):
-            array.append(i)
+        for buckets in range(self.size):
+            for i in self.buckets[buckets]:
+                array.append(i.key)
         return array
+
 
 # BASIC TESTING
 if __name__ == "__main__":
