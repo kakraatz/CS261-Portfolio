@@ -81,15 +81,14 @@ class HashMap:
         """"""
         bucket_location = self.hash_function(key) % self.buckets.length()
         if self.buckets[bucket_location].contains(key):
-            found_node = self.buckets[bucket_location]
-            if found_node.remove(key) is True:
-                found_node.remove(key)
-            else:
-                return
+            found_node = self.buckets[bucket_location].contains(key)
 
     def contains_key(self, key: str) -> bool:
         """"""
-        if self.buckets is None:
+        bucket_location = self.hash_function(key) % self.buckets.length()
+        if self.buckets[bucket_location].contains(key):
+            return True
+        else:
             return False
 
     def empty_buckets(self) -> int:
