@@ -75,10 +75,8 @@ class HashMap:
             found_node = self.buckets[bucket_location].contains(key)
             found_node.value = value
         else:
-            if self.buckets.get_at_index(bucket_location).length() == 0:
-                self.size = self.size + 1
             self.buckets[bucket_location].insert(key, value)
-
+            self.size = self.size + 1
 
     def remove(self, key: str) -> None:
         """
@@ -93,14 +91,15 @@ class HashMap:
 
     def empty_buckets(self) -> int:
         """"""
-        new_cap = self.capacity - self.size
-        return new_cap
+        empty_counter = 0
+        for i in range(0, self.capacity):
+            if self.buckets.get_at_index(i).length() == 0:
+                empty_counter += 1
+        return empty_counter
 
     def table_load(self) -> float:
         """"""
-        n = self.size
-        m = self.capacity
-        load = n / m
+        load = self.size / self.capacity
         return load
 
     def resize_table(self, new_capacity: int) -> None:
