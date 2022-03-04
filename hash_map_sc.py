@@ -111,15 +111,13 @@ class HashMap:
         return load
 
     def resize_table(self, new_capacity: int) -> None:
-        """
-        TODO: Write this implementation
-        """
-        pass
+        """"""
+
 
     def get_keys(self) -> DynamicArray:
         """"""
         array = DynamicArray()
-        for buckets in range(self.size):
+        for buckets in range(0, self.size):
             for i in self.buckets[buckets]:
                 array.append(i.key)
         return array
