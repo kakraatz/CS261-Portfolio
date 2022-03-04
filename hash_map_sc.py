@@ -60,13 +60,13 @@ class HashMap:
 
     def clear(self) -> None:
         """"""
-        pass
+        for i in range(0, self.capacity):
+            self.size = 0
 
     def get(self, key: str) -> object:
-        """
-        TODO: Write this implementation
-        """
-        pass
+        """"""
+        bucket_location = self.hash_function(key) % self.buckets.length()
+
 
     def put(self, key: str, value: object) -> None:
         """"""
