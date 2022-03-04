@@ -59,10 +59,9 @@ class HashMap:
         return out
 
     def clear(self) -> None:
-        """
-        TODO: Write this implementation
-        """
-        pass
+        """"""
+        self.capacity = 0
+        return
 
     def get(self, key: str) -> object:
         """
@@ -71,10 +70,12 @@ class HashMap:
         pass
 
     def put(self, key: str, value: object) -> None:
-        """
-        TODO: Write this implementation
-        """
-        pass
+        """"""
+        for i in range(0, self.size - 1):
+            if i == key:
+                SLNode.value = value
+            else:
+                LinkedList.insert(key, value)
 
     def remove(self, key: str) -> None:
         """
@@ -83,10 +84,9 @@ class HashMap:
         pass
 
     def contains_key(self, key: str) -> bool:
-        """
-        TODO: Write this implementation
-        """
-        pass
+        """"""
+        if self.buckets is None:
+            return False
 
     def empty_buckets(self) -> int:
         """
