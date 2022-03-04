@@ -71,7 +71,6 @@ class HashMap:
     def put(self, key: str, value: object) -> None:
         """"""
         bucket_location = self.hash_function(key) % self.buckets.length()
-        # print(self.buckets.get_at_index(bucket_location))
         if self.buckets[bucket_location].contains(key):
             found_node = self.buckets[bucket_location].contains(key)
             found_node.value = value
