@@ -112,11 +112,11 @@ class HashMap:
         pass
 
     def get_keys(self) -> DynamicArray:
-        """
-        TODO: Write this implementation
-        """
-        pass
-
+        """"""
+        array = DynamicArray()
+        for i in range(0, self.capacity):
+            array.append(i)
+        return array
 
 # BASIC TESTING
 if __name__ == "__main__":
