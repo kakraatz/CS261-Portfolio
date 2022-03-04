@@ -85,8 +85,7 @@ class HashMap:
         bucket_location = self.hash_function(key) % self.buckets.length()
         if self.buckets[bucket_location].contains(key):
             found_node = self.buckets[bucket_location].contains(key)
-            self.buckets[bucket_location].remove(found_node.key)
-            self.buckets[bucket_location].remove(found_node.value)
+            self.buckets[bucket_location].remove(found_node)
             self.size -= 1
 
     def contains_key(self, key: str) -> bool:
