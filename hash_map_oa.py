@@ -88,7 +88,17 @@ class HashMap:
         TODO: Write this implementation
         """
         # quadratic probing required
-        pass
+        initial = self.hash_function(key) % self.buckets.length()
+        add_counter = 1
+        next_pos = initial
+        while True:
+            if self.buckets.get_at_index(next_pos).key == key:
+                value = self.buckets.get_at_index(next_pos).value
+                break
+            else:
+                next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probe equation
+                add_counter += 1
+        return value
 
     def put(self, key: str, value: object) -> None:
         """"""
@@ -164,7 +174,7 @@ class HashMap:
             return
         new_map = DynamicArray()
         old_map = self.buckets
-        self.buckets = new_map  # set new hash map size to zero
+        self.buckets = new_map
         for _ in range(new_capacity):
             self.buckets.append(None)
         for buckets in range(0, old_map.length()):
