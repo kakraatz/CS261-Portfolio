@@ -66,31 +66,31 @@ class HashMap:
     def get(self, key: str) -> object:
         """"""
         bucket_location = self.hash_function(key) % self.buckets.length()
-        if self.buckets[bucket_location].contains(key):
-            found_node = self.buckets[bucket_location].contains(key)
+        if self.buckets.get_at_index(bucket_location).contains(key):
+            found_node = self.buckets.get_at_index(bucket_location).contains(key)
             return found_node.value
 
     def put(self, key: str, value: object) -> None:
         """"""
         bucket_location = self.hash_function(key) % self.buckets.length()
-        if self.buckets[bucket_location].contains(key):
-            found_node = self.buckets[bucket_location].contains(key)
+        if self.buckets.get_at_index(bucket_location).contains(key):
+            found_node = self.buckets.get_at_index(bucket_location).contains(key)
             found_node.value = value
         else:
-            self.buckets[bucket_location].insert(key, value)
+            self.buckets.get_at_index(bucket_location).insert(key, value)
             self.size = self.size + 1
 
     def remove(self, key: str) -> None:
         """"""
         bucket_location = self.hash_function(key) % self.buckets.length()
-        if self.buckets[bucket_location].contains(key):
-            self.buckets[bucket_location].remove(key)
+        if self.buckets.get_at_index(bucket_location).contains(key):
+            self.buckets.get_at_index(bucket_location).remove(key)
             self.size -= 1
 
     def contains_key(self, key: str) -> bool:
         """"""
         bucket_location = self.hash_function(key) % self.buckets.length()
-        if self.buckets[bucket_location].contains(key):
+        if self.buckets.get_at_index(bucket_location).contains(key):
             return True
         else:
             return False
@@ -110,13 +110,22 @@ class HashMap:
 
     def resize_table(self, new_capacity: int) -> None:
         """"""
-
+        new_map = DynamicArray()
+        old_map = self.buckets
+        self.buckets = new_map
+        self.size = 0  # set new hash map size to zero
+        for buckets in range(0, new_capacity):
+            self.buckets.append(LinkedList())
+        for buckets in range(0, self.capacity):
+            for i in old_map.get_at_index(buckets):
+                self.put(i.key, i.value)
+        self.capacity = new_capacity
 
     def get_keys(self) -> DynamicArray:
         """"""
         array = DynamicArray()
         for buckets in range(0, self.capacity):
-            for i in self.buckets[buckets]:
+            for i in self.buckets.get_at_index(buckets):
                 array.append(i.key)
         return array
 
