@@ -84,7 +84,6 @@ class HashMap:
         """"""
         bucket_location = self.hash_function(key) % self.buckets.length()
         if self.buckets[bucket_location].contains(key):
-            found_node = self.buckets[bucket_location].contains(key)
             self.buckets[bucket_location].remove(key)
             self.size -= 1
 
@@ -116,7 +115,7 @@ class HashMap:
     def get_keys(self) -> DynamicArray:
         """"""
         array = DynamicArray()
-        for buckets in range(0, self.size):
+        for buckets in range(0, self.capacity):
             for i in self.buckets[buckets]:
                 array.append(i.key)
         return array
