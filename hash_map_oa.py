@@ -117,16 +117,22 @@ class HashMap:
         pass
 
     def empty_buckets(self) -> int:
-        """
-        TODO: Write this implementation
-        """
-        pass
+        """"""
+        empty_counter = 0
+        for i in range(0, self.capacity):
+            if self.buckets.get_at_index(i) is None:
+                empty_counter += 1
+            else:
+                if self.buckets.get_at_index(i).is_tombstone:
+                    empty_counter += 1
+        return empty_counter
 
     def table_load(self) -> float:
         """
         TODO: Write this implementation
         """
-        pass
+        load = self.size / self.capacity
+        return load
 
     def resize_table(self, new_capacity: int) -> None:
         """
