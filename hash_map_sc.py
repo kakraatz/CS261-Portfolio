@@ -121,7 +121,7 @@ class HashMap:
             self.buckets.append(LinkedList())
         for buckets in range(0, self.capacity):
             for i in old_map.get_at_index(buckets):
-                self.put(i.key, i.value)
+                self.put(i.key, i.value)  # rehash all hash table links
         self.capacity = new_capacity
 
     def get_keys(self) -> DynamicArray:

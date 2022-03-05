@@ -100,7 +100,27 @@ class HashMap:
         # resize the table before putting the new key/value pair
         #
         # quadratic probing required
-        pass
+        if self.table_load() >= 0.5:
+            self.resize_table(self.capacity * 2)
+        #print(str(self.buckets.length()))
+        initial = self.hash_function(key) % self.buckets.length()
+        add_counter = 1
+        next_pos = initial
+        while True:
+            #print(str(next_pos))
+            #print(str(self.buckets.length()))
+            if self.buckets.get_at_index(next_pos) is None:
+                new_hash_entry = HashEntry(key, value)
+                self.buckets.set_at_index(next_pos, new_hash_entry)
+                self.size += 1
+                break
+            else:
+                if self.buckets.get_at_index(next_pos).key == key:
+                    self.buckets.get_at_index(next_pos).value = value
+                    break
+                else:
+                    next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probe equation
+                    add_counter += 1
 
     def remove(self, key: str) -> None:
         """
@@ -138,8 +158,25 @@ class HashMap:
         """
         TODO: Write this implementation
         """
+        #print("resize here")
         # remember to rehash non-deleted entries into new table
-        pass
+        if new_capacity < 1 or new_capacity < self.size:
+            return
+        new_map = DynamicArray()
+        old_map = self.buckets
+        self.buckets = new_map
+        self.size = 0  # set new hash map size to zero
+        for _ in range(new_capacity):
+            self.buckets.append(None)
+        for buckets in range(0, old_map.length()):
+            if buckets is not None:
+                pass
+            else:
+                if buckets.is_tombstone:
+                    pass
+                else:
+                    self.put(buckets.key, buckets.value)  # rehash all hash table links
+        self.capacity = new_capacity
 
     def get_keys(self) -> DynamicArray:
         """
