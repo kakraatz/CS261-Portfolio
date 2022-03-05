@@ -110,6 +110,8 @@ class HashMap:
 
     def resize_table(self, new_capacity: int) -> None:
         """"""
+        if new_capacity < 1:
+            return
         new_map = DynamicArray()
         old_map = self.buckets
         self.buckets = new_map
