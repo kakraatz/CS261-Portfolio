@@ -61,7 +61,8 @@ class HashMap:
     def clear(self) -> None:
         """"""
         for i in range(0, self.capacity):
-            self.size = 0
+            self.buckets.set_at_index(i, LinkedList())
+        self.size = 0
 
     def get(self, key: str) -> object:
         """"""
