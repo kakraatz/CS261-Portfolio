@@ -80,10 +80,8 @@ class HashMap:
         return out
 
     def clear(self) -> None:
-        """
-        TODO: Write this implementation
-        """
-        pass
+        """"""
+        self.size = 0
 
     def get(self, key: str) -> object:
         """
@@ -93,15 +91,15 @@ class HashMap:
         pass
 
     def put(self, key: str, value: object) -> None:
-        """
-        TODO: Write this implementation
-        """
+        """"""
         # remember, if the load factor is greater than or equal to 0.5,
         # resize the table before putting the new key/value pair
         #
         # quadratic probing required
+        #print(str(self.size))
         if self.table_load() >= 0.5:
             self.resize_table(self.capacity * 2)
+        #print(str(self.size))
         #print(str(self.buckets.length()))
         initial = self.hash_function(key) % self.buckets.length()
         add_counter = 1
@@ -140,8 +138,10 @@ class HashMap:
         """"""
         empty_counter = 0
         for i in range(0, self.capacity):
+            #print(str(self.buckets.get_at_index(i)))
             if self.buckets.get_at_index(i) is None:
                 empty_counter += 1
+                #print(str("None count so far is " + str(empty_counter)))
             else:
                 if self.buckets.get_at_index(i).is_tombstone:
                     empty_counter += 1
@@ -164,8 +164,7 @@ class HashMap:
             return
         new_map = DynamicArray()
         old_map = self.buckets
-        self.buckets = new_map
-        self.size = 0  # set new hash map size to zero
+        self.buckets = new_map  # set new hash map size to zero
         for _ in range(new_capacity):
             self.buckets.append(None)
         for buckets in range(0, old_map.length()):
@@ -182,7 +181,11 @@ class HashMap:
         """
         TODO: Write this implementation
         """
-        pass
+        array = DynamicArray()
+        for buckets in range(0, self.capacity):
+            for i in self.buckets.get_at_index(buckets):
+                array.append(i.key)
+        return array
 
 
 if __name__ == "__main__":
