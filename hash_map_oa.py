@@ -100,8 +100,10 @@ class HashMap:
         while True:
             if self.buckets.get_at_index(next_pos) is None:
                 return None
+
             else:
-                if self.buckets.get_at_index(next_pos).key == key and self.buckets.get_at_index(next_pos).is_tombstone == False:
+                if self.buckets.get_at_index(next_pos).key == key and self.buckets.get_at_index(
+                        next_pos).is_tombstone == False:
                     value = self.buckets.get_at_index(next_pos).value
                     return value
                 else:
@@ -114,7 +116,6 @@ class HashMap:
         # resize the table before putting the new key/value pair
         #
         # quadratic probing required
-        # print(str(self.size))
         if self.table_load() >= 0.5:
             self.resize_table(self.capacity * 2)
         # print(str(self.size))
@@ -158,6 +159,7 @@ class HashMap:
                 if self.buckets.get_at_index(next_pos).key == key:
                     self.buckets.get_at_index(next_pos).is_tombstone = True
                     self.size -= 1
+                    break
                 else:
                     next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probing to check next pos
                     add_counter += 1
@@ -174,7 +176,8 @@ class HashMap:
             if self.buckets.get_at_index(next_pos) is None:
                 return False
             else:
-                if self.buckets.get_at_index(next_pos).key == key and self.buckets.get_at_index(next_pos).is_tombstone == False:
+                if self.buckets.get_at_index(next_pos).key == key and self.buckets.get_at_index(
+                        next_pos).is_tombstone == False:
                     return True
                 else:
                     next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probing to check next pos
@@ -198,6 +201,7 @@ class HashMap:
         """
         TODO: Write this implementation
         """
+        # print("table load size: " + str(self.size) + " and the cap " + str(self.capacity))
         load = self.size / self.capacity
         return load
 
@@ -213,6 +217,7 @@ class HashMap:
         # print("starting size" + str(self.size))
         # print("starting capacity" + str(self.capacity))
         # print("starting empty buckets" + str(self.empty_buckets()))
+
         new_map = DynamicArray()
         old_map = self.buckets
         self.buckets = new_map
@@ -228,12 +233,13 @@ class HashMap:
                     pass
                 else:
                     # print("capacity is " + str(self.capacity))
-                    self.put(old_map.get_at_index(i).key, old_map.get_at_index(i).value)  # rehash all hash
-                    # table links
+                    self.put(old_map.get_at_index(i).key, old_map.get_at_index(i).value)  # rehash all hash table links
                     # print("did it put? - " + str(old_map.get_at_index(i).value))
+
         # print("ending size" + str(self.size))
         # print("ending capacity" + str(self.capacity))
         # print("ending empty buckets" + str(self.empty_buckets()))
+
         # print("capacity is now " + str(self.capacity))
 
     def get_keys(self) -> DynamicArray:
@@ -241,7 +247,6 @@ class HashMap:
         TODO: Write this implementation
         """
         array = DynamicArray()
-        # print(str(self))
         for buckets in range(0, self.capacity):
             if self.buckets.get_at_index(buckets) is None:
                 pass
