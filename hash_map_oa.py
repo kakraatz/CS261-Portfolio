@@ -130,7 +130,7 @@ class HashMap:
                 self.buckets.set_at_index(next_pos, new_hash_entry)
                 self.size += 1
                 break
-            elif self.buckets.get_at_index(next_pos).is_tombstone:
+            elif self.buckets.get_at_index(next_pos).is_tombstone == True:
                 new_hash_entry = HashEntry(key, value)
                 self.buckets.set_at_index(next_pos, new_hash_entry)
                 self.size += 1
@@ -221,7 +221,7 @@ class HashMap:
         for _ in range(0, new_capacity):
             self.buckets.append(None)
         for i in range(0, old_map.length()):
-            if old_map.get_at_index(i) is not None:
+            if old_map.get_at_index(i) is None:
                 pass
             else:
                 if old_map.get_at_index(i).is_tombstone:
