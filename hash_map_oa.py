@@ -152,7 +152,8 @@ class HashMap:
                 break
             else:
                 if self.buckets.get_at_index(next_pos).key == key:
-                    self.buckets.get_at_index(next_pos).key = HashEntry(None, None).is_tombstone
+                    value = self.buckets.get_at_index(next_pos).value
+                    self.buckets.get_at_index(next_pos).key = HashEntry(key, value).is_tombstone
                     self.size -= 1
                 else:
                     next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probing to check next pos
