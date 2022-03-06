@@ -212,14 +212,15 @@ class HashMap:
         for _ in range(0, new_capacity):
             self.buckets.append(None)
         for i in range(0, old_map.length()):
-            if self.buckets is not None:
+            if i is not None:
                 pass
             else:
-                if self.buckets.is_tombstone:
+                if i.is_tombstone:
                     pass
                 else:
                     # print("capacity is " + str(self.capacity))
-                    self.put(i.key, i.value)  # rehash all hash table links
+                    self.put(i.key, i.value)  # rehash all hash
+                    # table links
                     # print("did it put? - " + str(self.buckets))
         self.capacity = new_capacity
         # print("capacity is now " + str(self.capacity))
@@ -229,6 +230,7 @@ class HashMap:
         TODO: Write this implementation
         """
         array = DynamicArray()
+        # print(str(self))
         for buckets in range(0, self.capacity):
             if self.buckets.get_at_index(buckets) is None:
                 pass
