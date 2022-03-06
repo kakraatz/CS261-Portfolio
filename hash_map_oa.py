@@ -206,23 +206,31 @@ class HashMap:
         # remember to rehash non-deleted entries into new table
         if new_capacity < 1 or new_capacity < self.size:
             return
+        # print("rezising with table load: " + str(self.table_load()))
+        # print("starting size" + str(self.size))
+        # print("starting capacity" + str(self.capacity))
+        # print("starting empty buckets" + str(self.empty_buckets()))
         new_map = DynamicArray()
         old_map = self.buckets
         self.buckets = new_map
+        self.size = 0
+        self.capacity = new_capacity
         for _ in range(0, new_capacity):
             self.buckets.append(None)
         for i in range(0, old_map.length()):
-            if i is not None:
+            if old_map.get_at_index(i) is not None:
                 pass
             else:
-                if i.is_tombstone:
+                if old_map.get_at_index(i).is_tombstone:
                     pass
                 else:
                     # print("capacity is " + str(self.capacity))
-                    self.put(i.key, i.value)  # rehash all hash
+                    self.put(old_map.get_at_index(i).key, old_map.get_at_index(i).value)  # rehash all hash
                     # table links
                     # print("did it put? - " + str(self.buckets))
-        self.capacity = new_capacity
+        # print("ending size" + str(self.size))
+        # print("ending capacity" + str(self.capacity))
+        # print("ending empty buckets" + str(self.empty_buckets()))
         # print("capacity is now " + str(self.capacity))
 
     def get_keys(self) -> DynamicArray:
