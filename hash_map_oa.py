@@ -82,6 +82,7 @@ class HashMap:
     def clear(self) -> None:
         """"""
         for buckets in range(0, self.capacity):
+            self.buckets.set_at_index(buckets, None)
             self.size = 0
 
     def get(self, key: str) -> object:
