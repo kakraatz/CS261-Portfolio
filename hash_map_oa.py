@@ -81,6 +81,12 @@ class HashMap:
 
     def clear(self) -> None:
         """"""
+        for buckets in range(0, self.capacity):
+            if buckets is not None:
+                tombstone = HashEntry(None, None)
+                tombstone.is_tombstone = True
+                for i in range(0, self.capacity):
+                    self.buckets.set_at_index(i, tombstone)
         self.size = 0
 
     def get(self, key: str) -> object:
@@ -92,13 +98,16 @@ class HashMap:
         add_counter = 1
         next_pos = initial
         while True:
-            if self.buckets.get_at_index(next_pos).key == key:
-                value = self.buckets.get_at_index(next_pos).value
-                break
+            if self.buckets.get_at_index(next_pos) is None:
+                return None
+
             else:
-                next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probe equation
-                add_counter += 1
-        return value
+                if self.buckets.get_at_index(next_pos).key == key:
+                    value = self.buckets.get_at_index(next_pos).value
+                    return value
+                else:
+                    next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probe equation
+                    add_counter += 1
 
     def put(self, key: str, value: object) -> None:
         """"""
@@ -106,17 +115,17 @@ class HashMap:
         # resize the table before putting the new key/value pair
         #
         # quadratic probing required
-        #print(str(self.size))
+        # print(str(self.size))
         if self.table_load() >= 0.5:
             self.resize_table(self.capacity * 2)
-        #print(str(self.size))
-        #print(str(self.buckets.length()))
+        # print(str(self.size))
+        # print(str(self.buckets.length()))
         initial = self.hash_function(key) % self.buckets.length()
         add_counter = 1
         next_pos = initial
         while True:
-            #print(str(next_pos))
-            #print(str(self.buckets.length()))
+            # print(str(next_pos))
+            # print(str(self.buckets.length()))
             if self.buckets.get_at_index(next_pos) is None:
                 new_hash_entry = HashEntry(key, value)
                 self.buckets.set_at_index(next_pos, new_hash_entry)
@@ -135,26 +144,50 @@ class HashMap:
         TODO: Write this implementation
         """
         # quadratic probing required
-        pass
+        initial = self.hash_function(key) % self.buckets.length()
+        add_counter = 1
+        next_pos = initial
+        while True:
+            if self.buckets.get_at_index(next_pos) is None:
+                break
+            else:
+                if self.buckets.get_at_index(next_pos).key == key:
+                    self.buckets.get_at_index(next_pos).key = HashEntry(None, None).is_tombstone
+                    self.size -= 1
+                else:
+                    next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probing to check next pos
+                    add_counter += 1
 
     def contains_key(self, key: str) -> bool:
         """
         TODO: Write this implementation
         """
         # quadratic probing required
-        pass
+        initial = self.hash_function(key) % self.buckets.length()
+        add_counter = 1
+        next_pos = initial
+        while True:
+            if self.buckets.get_at_index(next_pos) is None:
+                return False
+            else:
+                if self.buckets.get_at_index(next_pos).key == key:
+                    return True
+                else:
+                    next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probing to check next pos
+                    add_counter += 1
 
     def empty_buckets(self) -> int:
         """"""
         empty_counter = 0
         for i in range(0, self.capacity):
-            #print(str(self.buckets.get_at_index(i)))
+            # print(str(self.buckets.get_at_index(i)))
             if self.buckets.get_at_index(i) is None:
                 empty_counter += 1
-                #print(str("None count so far is " + str(empty_counter)))
+                # print(str("None count so far is " + str(empty_counter)))
             else:
                 if self.buckets.get_at_index(i).is_tombstone:
                     empty_counter += 1
+        # print(str(self.size))
         return empty_counter
 
     def table_load(self) -> float:
@@ -168,24 +201,27 @@ class HashMap:
         """
         TODO: Write this implementation
         """
-        #print("resize here")
+        # print("resize here")
         # remember to rehash non-deleted entries into new table
         if new_capacity < 1 or new_capacity < self.size:
             return
         new_map = DynamicArray()
         old_map = self.buckets
         self.buckets = new_map
-        for _ in range(new_capacity):
+        for _ in range(0, new_capacity):
             self.buckets.append(None)
-        for buckets in range(0, old_map.length()):
-            if buckets is not None:
+        for i in range(0, old_map.length()):
+            if self.buckets is not None:
                 pass
             else:
-                if buckets.is_tombstone:
+                if self.buckets.is_tombstone:
                     pass
                 else:
-                    self.put(buckets.key, buckets.value)  # rehash all hash table links
+                    # print("capacity is " + str(self.capacity))
+                    self.put(i.key, i.value)  # rehash all hash table links
+                    # print("did it put? - " + str(self.buckets))
         self.capacity = new_capacity
+        # print("capacity is now " + str(self.capacity))
 
     def get_keys(self) -> DynamicArray:
         """
@@ -193,8 +229,10 @@ class HashMap:
         """
         array = DynamicArray()
         for buckets in range(0, self.capacity):
-            for i in self.buckets.get_at_index(buckets):
-                array.append(i.key)
+            if self.buckets.get_at_index(buckets) is None:
+                pass
+            else:
+                array.append(self.buckets.get_at_index(buckets).key)
         return array
 
 
