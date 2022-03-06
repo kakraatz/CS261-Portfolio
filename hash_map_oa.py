@@ -82,12 +82,7 @@ class HashMap:
     def clear(self) -> None:
         """"""
         for buckets in range(0, self.capacity):
-            if buckets is not None:
-                tombstone = HashEntry(None, None)
-                tombstone.is_tombstone = True
-                for i in range(0, self.capacity):
-                    self.buckets.set_at_index(i, tombstone)
-        self.size = 0
+            self.size = 0
 
     def get(self, key: str) -> object:
         """
