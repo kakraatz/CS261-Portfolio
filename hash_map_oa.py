@@ -174,7 +174,7 @@ class HashMap:
             if self.buckets.get_at_index(next_pos) is None:
                 return False
             else:
-                if self.buckets.get_at_index(next_pos).key == key:
+                if self.buckets.get_at_index(next_pos).key == key and self.buckets.get_at_index(next_pos).is_tombstone == False:
                     return True
                 else:
                     next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probing to check next pos
@@ -230,7 +230,7 @@ class HashMap:
                     # print("capacity is " + str(self.capacity))
                     self.put(old_map.get_at_index(i).key, old_map.get_at_index(i).value)  # rehash all hash
                     # table links
-                    # print("did it put? - " + str(self.buckets))
+                    # print("did it put? - " + str(old_map.get_at_index(i).value))
         # print("ending size" + str(self.size))
         # print("ending capacity" + str(self.capacity))
         # print("ending empty buckets" + str(self.empty_buckets()))
@@ -246,7 +246,8 @@ class HashMap:
             if self.buckets.get_at_index(buckets) is None:
                 pass
             else:
-                array.append(self.buckets.get_at_index(buckets).key)
+                if self.buckets.get_at_index(buckets).is_tombstone == False:
+                    array.append(self.buckets.get_at_index(buckets).key)
         return array
 
 
