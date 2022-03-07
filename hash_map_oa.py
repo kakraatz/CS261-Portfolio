@@ -149,9 +149,12 @@ class HashMap:
             if self.buckets[next_pos] is None:
                 break
             elif self.buckets[next_pos].key == key:  # find matching key and flag as tombstone
-                self.buckets[next_pos].is_tombstone = True
-                self.size -= 1  # decrement table size -1
-                break
+                if self.buckets[next_pos].is_tombstone:  # if found key is already tombstone, do nothing
+                    break
+                else:
+                    self.buckets[next_pos].is_tombstone = True
+                    self.size -= 1  # decrement table size -1
+                    break
             else:
                 next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probing for next pos
                 add_counter += 1  # increment +1 to j
