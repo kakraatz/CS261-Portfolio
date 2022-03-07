@@ -3,7 +3,7 @@
 # Course: CS261 - Data Structures
 # Assignment: 6 - Portfolio Project - HashMap Implementation
 # Due Date: 03/11/2022
-# Description:
+# Description: HashMap implementation using quadratic probing open addressing for collision resolution.
 
 
 from a6_include import *
@@ -91,20 +91,19 @@ class HashMap:
         """
         # quadratic probing required
         initial = self.hash_function(key) % self.buckets.length()
-        add_counter = 1
+        add_counter = 1  # j in quadratic probing equation, i = i(initial) + j^2
         next_pos = initial
         while True:
-            if self.buckets.get_at_index(next_pos) is None:
+            if self.buckets[next_pos] is None:
                 return None
-
             else:
-                if self.buckets.get_at_index(next_pos).key == key and self.buckets.get_at_index(
-                        next_pos).is_tombstone == False:
-                    value = self.buckets.get_at_index(next_pos).value
+                #  if key is found and hash entry is not a tombstone, return the value
+                if self.buckets[next_pos].key == key and self.buckets[next_pos].is_tombstone == False:
+                    value = self.buckets[next_pos].value
                     return value
                 else:
-                    next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probe equation
-                    add_counter += 1
+                    next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probing for next position
+                    add_counter += 1  # increment +1 to j
 
     def put(self, key: str, value: object) -> None:
         """"""
@@ -114,31 +113,27 @@ class HashMap:
         # quadratic probing required
         if self.table_load() >= 0.5:
             self.resize_table(self.capacity * 2)
-        # print(str(self.size))
-        # print(str(self.buckets.length()))
         initial = self.hash_function(key) % self.buckets.length()
-        add_counter = 1
+        add_counter = 1  # j in i = i(initial) + j^2
         next_pos = initial
         while True:
-            # print(str(next_pos))
-            # print(str(self.buckets.length()))
-            if self.buckets.get_at_index(next_pos) is None:
+            if self.buckets[next_pos] is None:  # insert hash entry into empty position
                 new_hash_entry = HashEntry(key, value)
                 self.buckets.set_at_index(next_pos, new_hash_entry)
-                self.size += 1
+                self.size += 1  # increment table size +1
                 break
-            elif self.buckets.get_at_index(next_pos).is_tombstone == True:
+            elif self.buckets[next_pos].is_tombstone:  # if key is existing tombstone, insert new hash entry for key
                 new_hash_entry = HashEntry(key, value)
                 self.buckets.set_at_index(next_pos, new_hash_entry)
-                self.size += 1
+                self.size += 1  # increment table size +1
                 break
             else:
-                if self.buckets.get_at_index(next_pos).key == key:
-                    self.buckets.get_at_index(next_pos).value = value
+                if self.buckets[next_pos].key == key:  # if key exists and is found, change existing value to new value
+                    self.buckets[next_pos].value = value
                     break
                 else:
-                    next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probe equation
-                    add_counter += 1
+                    next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probing for next pos
+                    add_counter += 1  # increment +1 to j
 
     def remove(self, key: str) -> None:
         """
@@ -146,18 +141,18 @@ class HashMap:
         """
         # quadratic probing required
         initial = self.hash_function(key) % self.buckets.length()
-        add_counter = 1
+        add_counter = 1  # j in i = i(initial) + j^2
         next_pos = initial
         while True:
-            if self.buckets.get_at_index(next_pos) is None:
+            if self.buckets[next_pos] is None:
                 break
-            elif self.buckets.get_at_index(next_pos).key == key:
-                self.size -= 1
-                self.buckets.get_at_index(next_pos).is_tombstone = True
+            elif self.buckets[next_pos].key == key:  # find matching key and flag as tombstone
+                self.size -= 1  # decrement table size -1
+                self.buckets[next_pos].is_tombstone = True
                 break
             else:
-                next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probing to check next pos
-                add_counter += 1
+                next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probing for next pos
+                add_counter += 1  # increment +1 to j
 
     def contains_key(self, key: str) -> bool:
         """
@@ -165,38 +160,34 @@ class HashMap:
         """
         # quadratic probing required
         initial = self.hash_function(key) % self.buckets.length()
-        add_counter = 1
+        add_counter = 1  # j in i = i(initial) + j^2
         next_pos = initial
         while True:
-            if self.buckets.get_at_index(next_pos) is None:
+            if self.buckets[next_pos] is None:
                 return False
             else:
-                if self.buckets.get_at_index(next_pos).key == key and self.buckets.get_at_index(
-                        next_pos).is_tombstone == False:
+                # find matching key that is not a tombstone
+                if self.buckets[next_pos].key == key and self.buckets[next_pos].is_tombstone == False:
                     return True
                 else:
-                    next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probing to check next pos
-                    add_counter += 1
+                    next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probing for next pos
+                    add_counter += 1  # increment +1 to j
 
     def empty_buckets(self) -> int:
         """"""
-        empty_counter = 0
+        empty_counter = 0  # counting incrementer for empty buckets
         for i in range(0, self.capacity):
-            # print(str(self.buckets.get_at_index(i)))
-            if self.buckets.get_at_index(i) is None:
+            if self.buckets[i] is None:  # if bucket is None, increment +1 to counter
                 empty_counter += 1
-                # print(str("None count so far is " + str(empty_counter)))
             else:
-                if self.buckets.get_at_index(i).is_tombstone:
+                if self.buckets[i].is_tombstone:  # if bucket is tombstone, increment +1 to counter
                     empty_counter += 1
-        # print(str(self.size))
         return empty_counter
 
     def table_load(self) -> float:
         """
         TODO: Write this implementation
         """
-        # print("table load size: " + str(self.size) + " and the cap " + str(self.capacity))
         load = self.size / self.capacity
         return load
 
@@ -204,50 +195,37 @@ class HashMap:
         """
         TODO: Write this implementation
         """
-        # print("resize here")
         # remember to rehash non-deleted entries into new table
+        # do not perform resize if new capacity is less than 1 or is less than table size
         if new_capacity < 1 or new_capacity < self.size:
             return
-        # print("rezising with table load: " + str(self.table_load()))
-        # print("starting size" + str(self.size))
-        # print("starting capacity" + str(self.capacity))
-        # print("starting empty buckets" + str(self.empty_buckets()))
-
-        new_map = DynamicArray()
+        new_map = DynamicArray()  # create new table
         old_map = self.buckets
-        self.buckets = new_map
+        self.buckets = new_map  # swap variables from old to new
         self.size = 0
         self.capacity = new_capacity
-        for _ in range(0, new_capacity):
-            self.buckets.append(None)
-        for i in range(0, old_map.length()):
-            if old_map.get_at_index(i) is None:
+        for _ in range(0, new_capacity):  # fill new table
+            new_map.append(None)
+        for i in range(0, old_map.length()):  # insert old table data into new table excluding empty's and tombstones
+            if old_map[i] is None:
                 pass
             else:
-                if old_map.get_at_index(i).is_tombstone:
+                if old_map[i].is_tombstone:
                     pass
                 else:
-                    # print("capacity is " + str(self.capacity))
-                    self.put(old_map.get_at_index(i).key, old_map.get_at_index(i).value)  # rehash all hash table links
-                    # print("did it put? - " + str(old_map.get_at_index(i).value))
-
-        # print("ending size" + str(self.size))
-        # print("ending capacity" + str(self.capacity))
-        # print("ending empty buckets" + str(self.empty_buckets()))
-
-        # print("capacity is now " + str(self.capacity))
+                    self.put(old_map[i].key, old_map[i].value)  # rehash all hash table links
 
     def get_keys(self) -> DynamicArray:
         """
         TODO: Write this implementation
         """
-        array = DynamicArray()
+        array = DynamicArray()  # generate array to return keys
         for buckets in range(0, self.capacity):
-            if self.buckets.get_at_index(buckets) is None:
+            if self.buckets[buckets] is None:  # exclude empty's
                 pass
             else:
-                if self.buckets.get_at_index(buckets).is_tombstone == False:
-                    array.append(self.buckets.get_at_index(buckets).key)
+                if not self.buckets[buckets].is_tombstone:  # exclude tombstones, append all keys to array
+                    array.append(self.buckets[buckets].key)
         return array
 
 

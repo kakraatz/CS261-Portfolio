@@ -128,7 +128,7 @@ class HashMap:
         """"""
         array = DynamicArray()
         for buckets in range(0, self.capacity):
-            for i in self.buckets.get_at_index(buckets):
+            for i in self.buckets[buckets]:
                 array.append(i.key)
         return array
 
