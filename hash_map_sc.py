@@ -90,8 +90,8 @@ class HashMap:
         not exist, this method does nothing."""
         bucket_location = self.hash_function(key) % self.buckets.length()
         if self.buckets[bucket_location].contains(key):
-            self.buckets[bucket_location].remove(key)  # if key is found, remove linked list node and decrement size -1
-            self.size -= 1
+            self.buckets[bucket_location].remove(key)  # remove node with LinkedList remove method
+            self.size -= 1  # decrement hash map size -1
 
     def contains_key(self, key: str) -> bool:
         """Returns True if the given key is in the hash map. Returns False otherwise."""

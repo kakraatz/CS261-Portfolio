@@ -149,8 +149,8 @@ class HashMap:
             if self.buckets[next_pos] is None:
                 break
             elif self.buckets[next_pos].key == key:  # find matching key and flag as tombstone
-                self.size -= 1  # decrement table size -1
                 self.buckets[next_pos].is_tombstone = True
+                self.size -= 1  # decrement table size -1
                 break
             else:
                 next_pos = (initial + (add_counter ** 2)) % self.capacity  # quadratic probing for next pos
@@ -201,8 +201,8 @@ class HashMap:
         new_map = DynamicArray()  # create new table
         old_map = self.buckets
         self.buckets = new_map  # swap variables from old to new
-        self.size = 0
-        self.capacity = new_capacity
+        self.size = 0  # set new hash map size to zero
+        self.capacity = new_capacity  # set new capacity
         for _ in range(0, new_capacity):  # fill new table
             new_map.append(None)
         for i in range(0, old_map.length()):  # insert old table data into new table excluding empty's and tombstones
