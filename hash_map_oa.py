@@ -139,8 +139,9 @@ class HashMap:
                     add_counter += 1  # increment +1 to j
 
     def remove(self, key: str) -> None:
-        """Removes the key and its value from the hash map. If the key does
-        not exist, this method does nothing."""
+        """Removes the key and its value from the hash map. Removed keys
+         are flagged as tombstones. If the key does not exist, this method
+         does nothing."""
         # quadratic probing required
         initial = self.hash_function(key) % self.buckets.length()
         add_counter = 1  # j in i = i(initial) + j^2
