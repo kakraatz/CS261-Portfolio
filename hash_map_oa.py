@@ -3,7 +3,8 @@
 # Course: CS261 - Data Structures
 # Assignment: 6 - Portfolio Project - HashMap Implementation
 # Due Date: 03/11/2022
-# Description: HashMap implementation using quadratic probing open addressing for collision resolution.
+# Description:  HashMap implementation using quadratic probing open addressing for collision resolution.
+#               This is part 2 of the portfolio project for CS261 Data Structures.
 
 
 from a6_include import *
@@ -80,15 +81,14 @@ class HashMap:
         return out
 
     def clear(self) -> None:
-        """"""
+        """Clears the contents of the hash map while preserving capacity."""
         for buckets in range(0, self.capacity):
             self.buckets.set_at_index(buckets, None)
             self.size = 0
 
     def get(self, key: str) -> object:
-        """
-        TODO: Write this implementation
-        """
+        """Returns the value associated with the given key. If the key is
+        not located, returns None."""
         # quadratic probing required
         initial = self.hash_function(key) % self.buckets.length()
         add_counter = 1  # j in quadratic probing equation, i = i(initial) + j^2
@@ -106,7 +106,10 @@ class HashMap:
                     add_counter += 1  # increment +1 to j
 
     def put(self, key: str, value: object) -> None:
-        """"""
+        """Inserts a new key/value pair into the hash map. If the
+        key already exists in the hash map, the existing value is replaced
+        with the new value. The table is resized to twice its existing
+        capacity when table load factor equals or exceeds 0.5."""
         # remember, if the load factor is greater than or equal to 0.5,
         # resize the table before putting the new key/value pair
         #
@@ -136,9 +139,8 @@ class HashMap:
                     add_counter += 1  # increment +1 to j
 
     def remove(self, key: str) -> None:
-        """
-        TODO: Write this implementation
-        """
+        """Removes the key and its value from the hash map. If the key does
+        not exist, this method does nothing."""
         # quadratic probing required
         initial = self.hash_function(key) % self.buckets.length()
         add_counter = 1  # j in i = i(initial) + j^2
@@ -155,9 +157,7 @@ class HashMap:
                 add_counter += 1  # increment +1 to j
 
     def contains_key(self, key: str) -> bool:
-        """
-        TODO: Write this implementation
-        """
+        """Returns True if the given key is in the hash map. Returns False otherwise."""
         # quadratic probing required
         initial = self.hash_function(key) % self.buckets.length()
         add_counter = 1  # j in i = i(initial) + j^2
@@ -174,7 +174,7 @@ class HashMap:
                     add_counter += 1  # increment +1 to j
 
     def empty_buckets(self) -> int:
-        """"""
+        """Returns the number of empty buckets in the hash map."""
         empty_counter = 0  # counting incrementer for empty buckets
         for i in range(0, self.capacity):
             if self.buckets[i] is None:  # if bucket is None, increment +1 to counter
@@ -185,16 +185,15 @@ class HashMap:
         return empty_counter
 
     def table_load(self) -> float:
-        """
-        TODO: Write this implementation
-        """
+        """Returns the load factor of the hash map."""
         load = self.size / self.capacity
         return load
 
     def resize_table(self, new_capacity: int) -> None:
-        """
-        TODO: Write this implementation
-        """
+        """Changes the hash map capacity to the given integer. Existing
+        key/value pairs are kept and links are rehashed. Does nothing if
+        the new capacity is less than 1 or is less than the number of
+        elements in the map."""
         # remember to rehash non-deleted entries into new table
         # do not perform resize if new capacity is less than 1 or is less than table size
         if new_capacity < 1 or new_capacity < self.size:
@@ -216,9 +215,7 @@ class HashMap:
                     self.put(old_map[i].key, old_map[i].value)  # rehash all hash table links
 
     def get_keys(self) -> DynamicArray:
-        """
-        TODO: Write this implementation
-        """
+        """Returns an array that contains all the keys in the hash map."""
         array = DynamicArray()  # generate array to return keys
         for buckets in range(0, self.capacity):
             if self.buckets[buckets] is None:  # exclude empty's
